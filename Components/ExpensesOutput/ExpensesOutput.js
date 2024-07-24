@@ -7,12 +7,17 @@ import ExpensesList from './ExpensesList';
 
 
 
-function ExpensesOutput({ expenses, expensePeriod }) {
+function ExpensesOutput({ expenses, expensePeriod, fallbackText }) {
+    let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+    if (expenses.length > 0) {
+        content = <ExpensesList expenses={expenses} />
+    }
 
     return (
         <View style={styles.container}>
             <ExpenseSummary expenses={expenses} periodName={expensePeriod} />
-            <ExpensesList expenses={expenses} />
+            {content}
         </View>
     )
 };
@@ -26,5 +31,11 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         backgroundColor: GlobalStyles.colors.primary700,
         flex: 1,
+    },
+    infoText: {
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center',
+        marginTop: 32,
     },
 });
