@@ -4,6 +4,8 @@ import { useState } from "react";
 import Input from "./Input";
 import Button from '../UI/Button';
 
+import { GlobalStyles } from '../../constants/styles';
+
 function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues }) {
     const [inputs, setInputs] = useState({
         amount: {
@@ -62,7 +64,6 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
     }
 
     const formIsInvalid = !inputs.amount.isValid || !inputs.date.isValid || !inputs.title.isValid;
-    console.log(`formIsInvalid:`, formIsInvalid);
 
     return (
         <View style={styles.form}>
@@ -71,6 +72,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
                 <Input
                     customStyle={styles.rowInput}
                     label="Amount"
+                    invalid={!inputs.amount.isValid}
                     TextInputConfig={{
                         placeholder: "0.00",
                         keyboardType: "decimal-pad",
@@ -80,6 +82,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
                 />
                 <Input
                     label="Date"
+                    invalid={!inputs.date.isValid}
                     TextInputConfig={{
                         placeholder: "YYYY-MM-DD",
                         maxLength: 10,
@@ -90,6 +93,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
             </View>
             <Input
                 label="Description"
+                invalid={!inputs.title.isValid}
                 TextInputConfig={{
                     placeholder: "Enter description",
                     multiline: true,
@@ -98,7 +102,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
                     value: inputs.title.value
                 }}
             />
-            {formIsInvalid && <Text >Field incorrect, check inputs</Text>}
+            {formIsInvalid && <Text style={styles.errorText}>Field incorrect, check inputs</Text>}
             <View style={styles.buttons}>
                 <Button customStyle={styles.button} mode="flat" onPress={cancelHandler}>Cancel</Button>
                 <Button customStyle={styles.button} onPress={submitHandler}>{submitButtonLabel}</Button>
@@ -137,4 +141,9 @@ const styles = StyleSheet.create({
         minWidth: 120,
         marginHorizontal: 8,
     },
+    errorText: {
+        color: GlobalStyles.colors.error500,
+        textAlign: 'center',
+        margin: 10,
+    }
 });
