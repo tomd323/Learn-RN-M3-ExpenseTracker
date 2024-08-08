@@ -5,7 +5,7 @@ import { ExpensesContext } from '../store/expenses-context';
 import { GlobalStyles } from '../constants/styles';
 
 import IconButton from '../Components/UI/IconButton';
-import Button from '../Components/UI/Button';
+import ExpenseForm from '../Components/ManageExpense/ExpenseForm';
 
 function ManageExpense({ route, navigation }) {
     const expensesCtx = useContext(ExpensesContext);
@@ -18,7 +18,6 @@ function ManageExpense({ route, navigation }) {
             title: isEditing ? 'Edit Expense' : 'Add Expense',
         });
 
-
     }, [navigation, isEditing])
 
     function deleteExpenseHandler() {
@@ -30,30 +29,22 @@ function ManageExpense({ route, navigation }) {
         navigation.goBack();
     }
 
-    function confirmHandler() {
+    function confirmHandler(expenseData) {
         if (isEditing) {
-            expensesCtx.updateExpense(editedExpenseId, {
-                title: 'Test',
-                amount: 29.99,
-                date: new Date('2024-07-24'),
-            });
+            expensesCtx.updateExpense(editedExpenseId, expenseData);
             navigation.goBack();
         } else {
-            expensesCtx.addExpense({
-                title: 'Test',
-                amount: 29.99,
-                date: new Date('2024-07-24'),
-            });
+            expensesCtx.addExpense(expenseData);
             navigation.goBack();
         }
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.buttons}>
-                <Button customStyle={styles.button} mode="flat" onPress={cancelHandler}>Cancel</Button>
-                <Button customStyle={styles.button} onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>
-            </View>
+            <ExpenseForm onCancel={cancelHandler}
+                submitButtonLabel={isEditing ? 'Update' : 'Add'}
+                onSubmit={confirmHandler}
+            />
             {isEditing && (
                 <View style={styles.deleteContainer}>
                     <IconButton
@@ -76,16 +67,6 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: GlobalStyles.colors.primary800,
     },
-    buttons: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    button: {
-        minWidth: 120,
-        marginHorizontal: 8,
-    },
-
     deleteContainer: {
         marginTop: 16,
         paddingTop: 8,
