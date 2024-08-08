@@ -4,11 +4,11 @@ import { useState } from "react";
 import Input from "./Input";
 import Button from '../UI/Button';
 
-function ExpenseForm({ onSubmit, navigation, submitButtonLabel }) {
+function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues }) {
     const [inputValues, setInputValues] = useState({
-        amount: '',
-        date: '',
-        description: ''
+        amount: defaultValues?.amount?.toString() || '',
+        date: defaultValues?.date.toISOString().slice(0, 10) || '',
+        description: defaultValues?.title || ''
     });
 
     function inputChangedHandler(inputIdentifier, enteredValue) {
@@ -26,12 +26,13 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel }) {
     }
 
     function submitHandler() {
+        console.log('Input:', inputValues);
         const expenseData = {
             amount: +inputValues.amount,
             date: new Date(inputValues.date),
-            description: inputValues.description
+            title: inputValues.description
         };
-
+        console.log(expenseData);
         onSubmit(expenseData);
     }
 
@@ -45,7 +46,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel }) {
                     TextInputConfig={{
                         placeholder: "0.00",
                         keyboardType: "decimal-pad",
-                        onChange: inputChangedHandler.bind(this, 'amount'),
+                        onChangeText: inputChangedHandler.bind(this, 'amount'),
                         value: inputValues.amount
                     }}
                 />
@@ -54,7 +55,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel }) {
                     TextInputConfig={{
                         placeholder: "YYYY-MM-DD",
                         maxLength: 10,
-                        onChange: inputChangedHandler.bind(this, 'date'),
+                        onChangeText: inputChangedHandler.bind(this, 'date'),
                         value: inputValues.date
                     }}
                 />
@@ -65,7 +66,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel }) {
                     placeholder: "Enter description",
                     multiline: true,
                     maxLength: 100,
-                    onChange: inputChangedHandler.bind(this, 'description'),
+                    onChangeText: inputChangedHandler.bind(this, 'description'),
                     value: inputValues.description
                 }}
             />
