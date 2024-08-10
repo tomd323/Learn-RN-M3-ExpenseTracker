@@ -43,7 +43,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
             title: inputs.title.value
         };
 
-        const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount.value > 0;
+        const amountIsValid = !isNaN(expenseData.amount) || expenseData.amount.value > 0;
         const dateIsValid = expenseData.date.toString() !== 'Invalid Date';
         const titleIsValid = expenseData.title.trim().length > 0;
 
@@ -98,7 +98,7 @@ function ExpenseForm({ onSubmit, navigation, submitButtonLabel, defaultValues })
                     placeholder: "Enter description",
                     multiline: true,
                     maxLength: 100,
-                    onChangeText: inputChangedHandler.bind(this, 'description'),
+                    onChangeText: inputChangedHandler.bind(this, 'title'),
                     value: inputs.title.value
                 }}
             />
