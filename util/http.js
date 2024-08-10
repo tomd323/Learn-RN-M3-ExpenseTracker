@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://rn-module-et-default-rtdb.firebaseio.com";
+const url = "https://rn-module-et-default-rtdb.firebaseiocom";
 
 export async function storeExpense(expenseData) {
     const response = await axios.post(`${url}/expenses.json`, expenseData);
